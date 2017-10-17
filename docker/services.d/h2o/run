@@ -1,0 +1,3 @@
+#!/usr/bin/execlineb -P
+
+/usr/local/bin/h2o -c /usr/local/etc/h2o.conf

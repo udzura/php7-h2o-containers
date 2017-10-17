@@ -4,6 +4,7 @@ ENV H2O_BRANCH v2.2.x
 # v2.2.2
 ENV H2O_COMMITISH 7677fce9e41668c6dc21928a19f7d977a186b4c4
 
+## Hey, install h2o
 RUN apt-get -qy update
 RUN apt-get -qy install git cmake
 RUN mkdir -p /tmp/h2o
@@ -53,6 +54,12 @@ ADD www-data /usr/local/www-data
 
 RUN mkdir /run/h2o && chown h2o:h2o /run/h2o
 
+# Install s6-overlay
+ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.0.2/s6-overlay-amd64.tar.gz /tmp/
+RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
+RUN mkdir -p /etc/services.d && rm -rf /etc/services.d/*
+ADD services.d /etc/services.d
+
 EXPOSE 8080
 EXPOSE 8443
-CMD ["/usr/local/bin/h2o", "-c", "/usr/local/etc/h2o.conf"]
+ENTRYPOINT ["/init"]
